@@ -22,7 +22,8 @@ export class TeamMemberController {
     static addMemberById = async (req : Request, res : Response) => {
         try {
             if (!req.project) {
-                return res.status(404).json({error: 'Proyecto no encontrado'})
+                const error = new Error('Proyecto no encontrado')
+                return res.status(404).json({error: error.message})
             }
             const {id} = req.body
             const user = await User.findById(id)

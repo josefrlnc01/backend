@@ -118,6 +118,9 @@ router.post('/',
     )
 
     router.get('/:projectId/team',
+        param('projectId').isMongoId().withMessage('Id no válido'),
+        handleInputErrors,
+        handleProjectValidation,
         TeamMemberController.getProjectTeam
     )
 
