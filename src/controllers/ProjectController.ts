@@ -7,14 +7,16 @@ export class ProjectController {
         try{
             const projects = await Project.find({
                 $or : [
-                    {manager : {$in: req.user._id}}
+                    {manager : {$in: req.user._id}},
+                    {team : {$in: req.user._id}}
                 ]
-            })
+            }).populate('manager', '_id')
             res.json(projects)
 
         } catch (error) {
             
             console.error(error)
+            res.status(500).json({error: 'Hubo un error'})
         }
     }
 
@@ -42,7 +44,7 @@ export class ProjectController {
                 const error = new Error('No se encontró el proyecto')
                 return res.status(404).json({error:error.message});
             }
-            if (existentProject.manager.toString() !== req.user.id.toString()) {
+            if (existentProject.manager.toString() !== req.user.id.toString() && !existentProject.team.includes(req.user._id)) {
                 const error = new Error('Acción no válida')
                 return res.status(404).json({error:error.message});
             }

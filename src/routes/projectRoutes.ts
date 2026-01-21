@@ -140,9 +140,9 @@ router.post('/',
     )
 
 
-    router.delete('/:projectId/team',
-        body('id')
-            .isMongoId().withMessage('Email no válido'),
+    router.delete('/:projectId/team/:userId',
+        param('projectId').isMongoId().withMessage('Id no válido'),
+        param('userId').isMongoId().withMessage('Id no válido'),
         handleInputErrors,
         handleProjectValidation,
         TeamMemberController.removeMemberById
